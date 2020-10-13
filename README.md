@@ -1,1 +1,1 @@
-# react_module_generator
+# Create react module CLI
