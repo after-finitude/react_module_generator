@@ -1,10 +1,10 @@
 import { createModule } from "./createModule.ts";
-import { prompts } from "./prompt.ts";
+import { prompts } from "./prompts.ts";
 
-const main = async () => {
+async function main() {
   const results = await prompts();
 
   createModule(results);
-};
+}
 
 main();

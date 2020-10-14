@@ -1,5 +1,6 @@
 import { bold, ensureDir } from "./deps.ts";
 
+import { Prompts } from "./types.ts";
 import {
   generateConstants,
   generateIndex,
@@ -11,8 +12,9 @@ import {
 const chooseComponentCreate = (name: string, isTs: boolean) =>
   isTs ? generateTsComponent(name) : generateJsComponent(name);
 
-// deno-lint-ignore no-explicit-any
-export const createModule = (results: Record<string, any>) => {
+export function createModule(
+  results: Prompts,
+) {
   const { name, path, isTs } = results;
 
   const updatedPath = `./${path}/${name}`;
@@ -45,4 +47,4 @@ export const createModule = (results: Record<string, any>) => {
 
   console.log(" ");
   console.info(`Module ${bold(name)} was created`);
-};
+}
