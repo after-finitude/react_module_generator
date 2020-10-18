@@ -12,6 +12,17 @@ import {
 const chooseComponentCreate = (name: string, isTs: boolean) =>
   isTs ? generateTsComponent(name) : generateJsComponent(name);
 
+const createModuleElement = (
+  moduleName: string,
+  path: string,
+  ext: string,
+  generateResult: string,
+) =>
+  Deno.writeTextFile(
+    `${path}/${moduleName}.${ext}`,
+    generateResult,
+  );
+
 export function createModule(
   results: Prompts,
 ) {
@@ -19,28 +30,29 @@ export function createModule(
 
   const updatedPath = `./${path}/${name}`;
 
-  const fileExt = isTs ? "ts" : "js";
+  const ext = isTs ? "ts" : "js";
   const componentExt = isTs ? "tsx" : "jsx";
 
   ensureDir(updatedPath)
     .then(() =>
-      Deno.writeTextFile(
-        `${updatedPath}/index.${fileExt}`,
-        generateIndex(name),
-      )
+      createModuleElement("index", updatedPath, ext, generateIndex(name))
     )
     .then(() =>
-      Deno.writeTextFile(
-        `${updatedPath}/${name}.${componentExt}`,
+      createModuleElement(
+        name,
+        updatedPath,
+        componentExt,
         chooseComponentCreate(name, isTs),
       )
     )
     .then(() =>
-      Deno.writeTextFile(`${updatedPath}/utils.${fileExt}`, generateUtils(name))
+      createModuleElement("utils", updatedPath, ext, generateUtils(name))
     )
     .then(() =>
-      Deno.writeTextFile(
-        `${updatedPath}/constants.${fileExt}`,
+      createModuleElement(
+        "constants",
+        updatedPath,
+        ext,
         generateConstants(name),
       )
     );
